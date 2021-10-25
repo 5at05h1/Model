@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils import timezone
+import pytz
 
 
 class BaseMeta(models.Model):
-    create_at = models.DateTimeField(default=timezone.datetime.now)
-    update_at = models.DateTimeField(default=timezone.datetime.now)
+    create_at = models.DateTimeField(default=timezone.datetime.now(pytz.timezone('Asia/Tokyo')))
+    update_at = models.DateTimeField(default=timezone.datetime.now(pytz.timezone('Asia/Tokyo')))
 
     class Meta:
         abstract = True
@@ -22,3 +23,6 @@ class Person(BaseMeta):
         db_table = 'person'
         index_together = [['first_name', 'last_name']]
         ordering = ['salary']
+    
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
